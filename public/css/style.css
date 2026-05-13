@@ -360,11 +360,11 @@ button, input {
 
 /* Fake driver truck */
 .truck-marker {
-  font-size: 24px;
+  font-size: 28px;
   display: block;
-  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.35));
+  /* Dark grey tint to approximate a Nissan Titan */
+  filter: grayscale(1) brightness(0.35) drop-shadow(0 2px 5px rgba(0,0,0,0.5));
   cursor: default;
-  /* subtle float animation */
   animation: truck-float 3s ease-in-out infinite;
 }
 

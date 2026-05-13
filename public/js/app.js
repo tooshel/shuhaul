@@ -129,9 +129,9 @@ const App = {
   spawnFakeDrivers(center) {
     const icon = L.divIcon({
       className:  '',
-      html:       '<span class="truck-marker">🚚</span>',
-      iconSize:   [30, 30],
-      iconAnchor: [15, 15],
+      html:       '<span class="truck-marker">🛻</span>',
+      iconSize:   [40, 40],
+      iconAnchor: [20, 20],
     });
 
     // Each fake driver gets a home position, orbital speed, and radius
@@ -145,7 +145,7 @@ const App = {
     configs.forEach((cfg, i) => {
       const homeLat = center[0] + cfg.offsetLat;
       const homeLng = center[1] + cfg.offsetLng;
-      const marker  = L.marker([homeLat, homeLng], { icon }).addTo(this.map);
+      const marker  = L.marker([homeLat, homeLng], { icon, zIndexOffset: 500 }).addTo(this.map);
 
       this.fakeDrivers.push({
         marker,
@@ -361,9 +361,13 @@ const App = {
       ? pickup.address.split(',').slice(0, 2).join(',')   // trim long Nominatim strings
       : `${pickup.lat.toFixed(4)}° N, ${Math.abs(pickup.lng).toFixed(4)}° W`;
 
-    document.getElementById('trip-pickup').textContent  = pickupStr;
-    document.getElementById('trip-dropoff').textContent = destination;
+    const tierPoints = { 'Shu-Haul X': 5, 'Shu-Haul Black': 10, 'Shu-Haul Pool': 3 };
+    const fp = tierPoints[tier] ?? 5;
+
+    document.getElementById('trip-pickup').textContent        = pickupStr;
+    document.getElementById('trip-dropoff').textContent       = destination;
     document.getElementById('tier-badge-display').textContent = tier;
+    document.getElementById('fp-badge').textContent           = `${fp} FP`;
 
     this.showScreen('screen-ride');
     this.startEtaTimer();
