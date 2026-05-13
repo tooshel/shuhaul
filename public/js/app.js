@@ -48,7 +48,7 @@ const App = {
       scrollWheelZoom:   true,
       doubleClickZoom:   true,
       touchZoom:         true,
-    }).setView([this.DEFAULT_LAT, this.DEFAULT_LNG], 15);
+    }).setView([this.DEFAULT_LAT, this.DEFAULT_LNG], 13);
 
     // CartoDB Voyager: clean, colourful, no API key needed
     L.tileLayer(
@@ -74,7 +74,7 @@ const App = {
       (pos) => {
         const { latitude: lat, longitude: lng } = pos.coords;
         this.userLocation = { lat, lng };
-        this.map.flyTo([lat, lng], 15, { duration: 1.5 });
+        this.map.flyTo([lat, lng], 13, { duration: 1.5 });
         this.addUserMarker([lat, lng]);
         this.repositionFakeDrivers([lat, lng]);
 
