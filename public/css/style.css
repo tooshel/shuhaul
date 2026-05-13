@@ -968,7 +968,7 @@ button, input {
 .driver-avatar {
   width: 56px;
   height: 56px;
-  background: var(--orange);
+  background: var(--orange); /* fallback if photo doesn't load */
   color: var(--white);
   border-radius: 50%;
   font-size: 24px;
@@ -978,6 +978,14 @@ button, input {
   justify-content: center;
   flex-shrink: 0;
   letter-spacing: -1px;
+  overflow: hidden;
+}
+
+.driver-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .driver-info {
