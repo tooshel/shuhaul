@@ -58,7 +58,36 @@ npm run dev            # nodemon → http://localhost:3000
 
 ## Deploy to Cloudflare Pages
 
-### First time setup
+There are two ways to deploy. **GitHub integration is recommended** — push to main and it auto-deploys.
+
+---
+
+### Option A — GitHub integration (recommended)
+
+**Step 1 — Push this repo to GitHub**
+
+**Step 2 — Create the Pages project**
+
+`dash.cloudflare.com` → Workers & Pages → Create → Pages → Connect to Git → select the repo
+
+**Step 3 — Set the build configuration**
+
+| Setting | Value |
+|---|---|
+| Framework preset | `None` |
+| Build command | *(leave empty — no build step needed)* |
+| Build output directory | `public` |
+
+> CF Pages automatically detects `functions/` and deploys them as Pages Functions.
+> You do NOT run wrangler in the build step — that causes errors.
+
+**Step 4 — Add secrets** (see table below), then click **Save and Deploy**.
+
+After this, every push to `main` triggers an automatic deploy.
+
+---
+
+### Option B — Deploy from your local machine (no GitHub needed)
 
 **Step 1 — Log in to Cloudflare via wrangler**
 ```bash
@@ -68,6 +97,7 @@ npx wrangler login
 
 **Step 2 — Deploy (this also creates the project on first run)**
 ```bash
+npm install
 npm run cf:deploy
 # First run will ask for a project name → use: shuhaul
 ```
@@ -85,20 +115,19 @@ Add each of these as a **Secret** (not plain text) for the **Production** enviro
 | `TWILIO_FROM_NUMBER` | Twilio Console → Phone Numbers (format: `+15550001234`) |
 | `DRIVER_PHONE_NUMBER` | The driver's real phone number (format: `+15550001234`) |
 
-**Step 4 — Redeploy once so the Function picks up the new secrets**
+**Step 4 (Option B only) — Redeploy once so the Function picks up the new secrets**
 ```bash
 npm run cf:deploy
 ```
 
-That's it. Your app is live at `https://shuhaul.pages.dev` (or your custom domain).
+That's it. Your app is live at `https://shuhaul.pages.dev` (or a custom domain you attach).
 
 ---
 
 ### Subsequent deploys
 
-```bash
-npm run cf:deploy
-```
+- **GitHub integration:** just `git push` — CF deploys automatically
+- **Manual:** `npm run cf:deploy`
 
 ---
 
