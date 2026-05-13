@@ -1,0 +1,14 @@
+# ============================================================
+# SHU-HAUL — Cloudflare Pages configuration
+# Docs: https://developers.cloudflare.com/pages/
+# ============================================================
+
+name                  = "shuhaul"
+pages_build_output_dir = "public"
+compatibility_date    = "2025-01-01"
+
+# Secrets (TWILIO_*, DRIVER_PHONE_NUMBER) are NOT set here.
+# Set them in the Cloudflare dashboard:
+#   Pages → shuhaul → Settings → Environment Variables
+# Or via CLI:
+#   npx wrangler pages secret put TWILIO_ACCOUNT_SID

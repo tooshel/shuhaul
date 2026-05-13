@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#E54A19" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Shu-Haul — Move Anything. Anywhere. Anyhow.</title>
+
+  <!-- Emoji favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚚</text></svg>" />
+
+  <!-- Fonts: Inter from Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+  <!-- App Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ================================================================
+       SCREEN 1: MAP + WHERE TO
+       ================================================================ -->
+  <div id="screen-map" class="screen active">
+
+    <!-- Leaflet Map fills entire background -->
+    <div id="map"></div>
+
+    <!-- Floating header -->
+    <header class="app-header">
+      <div class="logo">Shu<span>-Haul</span></div>
+      <div class="header-badge">BETA</div>
+    </header>
+
+    <!-- Bottom "Where to?" card -->
+    <div class="bottom-card" id="where-to-card">
+      <p class="card-eyebrow">Good luck out there</p>
+
+      <div class="where-to-wrapper">
+        <span class="where-to-icon">🔍</span>
+        <input
+          type="text"
+          id="destination-input"
+          class="where-to-input"
+          placeholder="Where to?"
+          autocomplete="off"
+          autocorrect="off"
+          spellcheck="false"
+        />
+        <button class="where-to-btn" id="btn-where-to" aria-label="Search destination">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8h10M9 4l4 4-4 4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quick-select destinations (perfect for Google I/O attendees) -->
+      <div class="recent-destinations">
+        <div class="recent-item" data-dest="Shoreline Amphitheatre">
+          <span class="recent-icon">🎪</span>
+          <div class="recent-text">
+            <div class="recent-name">Shoreline Amphitheatre</div>
+            <div class="recent-sub">Google I/O · 1 Amphitheatre Pkwy</div>
+          </div>
+          <span class="recent-arrow">›</span>
+        </div>
+        <div class="recent-item" data-dest="Hotel Avante Mountain View">
+          <span class="recent-icon">🏨</span>
+          <div class="recent-text">
+            <div class="recent-name">Hotel Avante</div>
+            <div class="recent-sub">Mountain View · Your hotel, probably</div>
+          </div>
+          <span class="recent-arrow">›</span>
+        </div>
+        <div class="recent-item" data-dest="In-N-Out Burger Mountain View">
+          <span class="recent-icon">🍔</span>
+          <div class="recent-text">
+            <div class="recent-name">In-N-Out Burger</div>
+            <div class="recent-sub">Mountain View · The real reason you're here</div>
+          </div>
+          <span class="recent-arrow">›</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- /screen-map -->
+
+
+  <!-- ================================================================
+       BOTTOM SHEET: TIER SELECTION (overlays map screen)
+       ================================================================ -->
+  <div id="sheet-overlay" class="sheet-overlay">
+    <div class="bottom-sheet" id="sheet-tiers">
+      <div class="sheet-handle"></div>
+
+      <div class="sheet-header">
+        <div>
+          <h2 class="sheet-title">Choose Your Shu-Haul</h2>
+          <p class="sheet-subtitle" id="sheet-dest-label">→ Destination</p>
+        </div>
+        <button class="sheet-close" id="btn-sheet-close" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Tier options -->
+      <div class="tier-list" role="radiogroup" aria-label="Vehicle tier selection">
+
+        <!-- Tier: X -->
+        <div class="tier-card" data-tier="Shu-Haul X" role="radio" aria-checked="false" tabindex="0">
+          <div class="tier-icon-wrap">
+            <span class="tier-emoji">🚚</span>
+          </div>
+          <div class="tier-info">
+            <div class="tier-name">Shu-Haul X</div>
+            <div class="tier-desc">Standard truck bed experience.</div>
+            <div class="tier-eta">
+              <span class="eta-dot"></span>
+              5 min away
+            </div>
+          </div>
+          <div class="tier-price-wrap">
+            <div class="tier-price">Free</div>
+          </div>
+        </div>
+
+        <!-- Tier: Black -->
+        <div class="tier-card" data-tier="Shu-Haul Black" role="radio" aria-checked="false" tabindex="0">
+          <div class="tier-icon-wrap tier-icon-dark">
+            <span class="tier-emoji">🚚</span>
+          </div>
+          <div class="tier-info">
+            <div class="tier-name">Shu-Haul Black</div>
+            <div class="tier-desc">Premium cabin seating with complimentary AC.</div>
+            <div class="tier-eta">
+              <span class="eta-dot"></span>
+              5 min away
+            </div>
+          </div>
+          <div class="tier-price-wrap">
+            <div class="tier-price">Free</div>
+            <div class="tier-premium-badge">PREMIUM</div>
+          </div>
+        </div>
+
+        <!-- Tier: Pool -->
+        <div class="tier-card" data-tier="Shu-Haul Pool" role="radio" aria-checked="false" tabindex="0">
+          <div class="tier-icon-wrap tier-icon-pool">
+            <span class="tier-emoji">🖨️</span>
+          </div>
+          <div class="tier-info">
+            <div class="tier-name">Shu-Haul Pool</div>
+            <div class="tier-desc">You might be sharing the bed with a 3D printer.</div>
+            <div class="tier-eta tier-eta-pool">
+              <span class="eta-dot eta-dot-gray"></span>
+              Whenever
+            </div>
+          </div>
+          <div class="tier-price-wrap">
+            <div class="tier-price">Free</div>
+            <div class="tier-pool-badge">SHARED</div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /tier-list -->
+
+      <!-- Rider name input -->
+      <div class="name-field-wrapper">
+        <label class="name-label" for="rider-name">Your name</label>
+        <input
+          type="text"
+          id="rider-name"
+          class="name-input"
+          placeholder="e.g. Steve Ballmer"
+          autocomplete="name"
+          autocorrect="off"
+        />
+      </div>
+
+      <!-- Confirm button -->
+      <button class="btn-confirm" id="btn-confirm-ride" disabled>
+        Select a Shu-Haul
+      </button>
+
+      <p class="sheet-fine-print">
+        By requesting a Shu-Haul you agree that Sheldon is the only driver and that
+        the app owner is not responsible for coffee-related delays.
+      </p>
+    </div>
+  </div>
+  <!-- /sheet-overlay -->
+
+
+  <!-- ================================================================
+       SCREEN 2: CONNECTING (orange loading state)
+       ================================================================ -->
+  <div id="screen-connecting" class="screen hidden">
+    <div class="connecting-content">
+      <div class="connecting-logo">Shu<span>-Haul</span></div>
+
+      <div class="connecting-anim">
+        <div class="connecting-road">
+          <div class="road-line"></div>
+          <div class="road-line"></div>
+          <div class="road-line"></div>
+        </div>
+        <div class="connecting-truck">🚚</div>
+      </div>
+
+      <p class="connecting-text">Finding your driver...</p>
+      <p class="connecting-sub">Deploying the exclusive fleet</p>
+
+      <div class="connecting-dots">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+  <!-- /screen-connecting -->
+
+
+  <!-- ================================================================
+       SCREEN 3: ACTIVE RIDE
+       ================================================================ -->
+  <div id="screen-ride" class="screen hidden">
+
+    <!-- Dark top section: header + ETA -->
+    <div class="ride-top">
+      <div class="ride-header">
+        <div class="logo logo-white">Shu<span>-Haul</span></div>
+        <div class="ride-status-pill">
+          <span class="status-dot"></span>
+          ON THE WAY
+        </div>
+      </div>
+
+      <div class="eta-banner">
+        <div class="eta-truck-wrap">
+          <span class="eta-truck-icon">🚚</span>
+        </div>
+        <p class="eta-message" id="eta-message">
+          Sheldon is completing a trip nearby. Arriving in 5 minutes.
+        </p>
+      </div>
+    </div>
+
+    <!-- Light scrollable body -->
+    <div class="ride-body">
+
+      <!-- Driver card -->
+      <div class="ride-card driver-card">
+        <div class="driver-avatar" aria-label="Driver avatar">S</div>
+        <div class="driver-info">
+          <div class="driver-name">Sheldon</div>
+          <div class="driver-rating">
+            <span class="stars" aria-label="4.99 stars">★★★★★</span>
+            <span class="rating-num">4.99</span>
+            <span class="rating-trips">• 1,402 trips</span>
+          </div>
+          <div class="driver-vehicle">2019 Ford F-150 SuperCrew · Orange</div>
+          <div class="driver-plate">🍊 &nbsp;SHU-HAUL</div>
+        </div>
+        <button class="contact-btn" aria-label="Contact driver" title="Call Sheldon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1C9.61 21 3 14.39 3 6.5c0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.21 2.2z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Trip details card -->
+      <div class="ride-card trip-card">
+        <div class="trip-row">
+          <div class="trip-dot pickup-dot"></div>
+          <div class="trip-text">
+            <div class="trip-label">Pickup</div>
+            <div class="trip-addr" id="trip-pickup">Your current location</div>
+          </div>
+        </div>
+        <div class="trip-connector">
+          <div class="trip-line"></div>
+        </div>
+        <div class="trip-row">
+          <div class="trip-dot dropoff-dot"></div>
+          <div class="trip-text">
+            <div class="trip-label">Dropoff</div>
+            <div class="trip-addr" id="trip-dropoff">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tier & pricing card -->
+      <div class="ride-card tier-summary-card">
+        <div class="tier-summary-row">
+          <span class="tier-summary-label">Vehicle tier</span>
+          <span class="tier-badge" id="tier-badge-display">Shu-Haul X</span>
+        </div>
+        <div class="tier-summary-row">
+          <span class="tier-summary-label">Total fare</span>
+          <span class="free-badge">COMPLIMENTARY</span>
+        </div>
+        <p class="tier-summary-note">
+          No matter which tier you selected, you're getting the same truck.
+          That's the beauty of the Shu-Haul experience. ✨
+        </p>
+      </div>
+
+      <!-- Safety / footer -->
+      <div class="ride-footer">
+        <p>🔒 Your ride is secured by Shu-Haul Trust & Safety™</p>
+        <p>Questions? Text Sheldon directly.</p>
+      </div>
+
+    </div>
+    <!-- /ride-body -->
+
+  </div>
+  <!-- /screen-ride -->
+
+</div>
+<!-- /app -->
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV/XN2GqM=" crossorigin=""></script>
+
+<!-- App JS -->
+<script src="js/app.js"></script>
+
+</body>
+</html>

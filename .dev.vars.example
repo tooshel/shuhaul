@@ -1,0 +1,13 @@
+# ============================================================
+# SHU-HAUL — Local dev secrets for Cloudflare Pages / wrangler
+# Copy to .dev.vars and fill in real values.
+# wrangler reads this file automatically when running:
+#   npx wrangler pages dev public
+#
+# .dev.vars is in .gitignore — never commit it.
+# ============================================================
+
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_auth_token_here
+TWILIO_FROM_NUMBER=+15550001234
+DRIVER_PHONE_NUMBER=+15559876543
