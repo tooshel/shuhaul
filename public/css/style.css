@@ -359,13 +359,30 @@ button, input {
 }
 
 /* Fake driver truck */
+.truck-marker-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: default;
+  animation: truck-float 3s ease-in-out infinite;
+}
+
 .truck-marker {
   font-size: 28px;
   display: block;
-  /* Dark grey tint to approximate a Nissan Titan */
-  filter: grayscale(1) brightness(0.35) drop-shadow(0 2px 5px rgba(0,0,0,0.5));
-  cursor: default;
-  animation: truck-float 3s ease-in-out infinite;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+  line-height: 1;
+}
+
+/* Coloured dot below each truck — set via inline style in JS */
+.truck-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1.5px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  flex-shrink: 0;
 }
 
 @keyframes truck-float {

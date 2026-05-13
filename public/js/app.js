@@ -127,24 +127,26 @@ const App = {
 
   /* ---- Fake driver markers that roam around the area ------ */
   spawnFakeDrivers(center) {
-    const icon = L.divIcon({
-      className:  '',
-      html:       '<span class="truck-marker">🛻</span>',
-      iconSize:   [40, 40],
-      iconAnchor: [20, 20],
-    });
-
-    // Each fake driver gets a home position, orbital speed, and radius
+    // Each fake driver gets a home position, orbital speed, radius, and a Google brand colour
     const configs = [
-      { offsetLat:  0.008, offsetLng:  0.012, speed: 0.018, radius: 0.006 },
-      { offsetLat: -0.010, offsetLng:  0.005, speed: 0.025, radius: 0.008 },
-      { offsetLat:  0.003, offsetLng: -0.014, speed: 0.015, radius: 0.010 },
-      { offsetLat: -0.006, offsetLng: -0.009, speed: 0.022, radius: 0.007 },
+      { offsetLat:  0.008, offsetLng:  0.012, speed: 0.018, radius: 0.006, color: '#4285F4' }, // Google Blue
+      { offsetLat: -0.010, offsetLng:  0.005, speed: 0.025, radius: 0.008, color: '#EA4335' }, // Google Red
+      { offsetLat:  0.003, offsetLng: -0.014, speed: 0.015, radius: 0.010, color: '#FBBC04' }, // Google Yellow
+      { offsetLat: -0.006, offsetLng: -0.009, speed: 0.022, radius: 0.007, color: '#34A853' }, // Google Green
     ];
 
     configs.forEach((cfg, i) => {
       const homeLat = center[0] + cfg.offsetLat;
       const homeLng = center[1] + cfg.offsetLng;
+
+      // Individual icon per truck so each gets its own colour dot
+      const icon = L.divIcon({
+        className:  '',
+        html:       `<div class="truck-marker-wrap"><span class="truck-marker">🛻</span><div class="truck-indicator" style="background:${cfg.color}"></div></div>`,
+        iconSize:   [40, 44],
+        iconAnchor: [20, 22],
+      });
+
       const marker  = L.marker([homeLat, homeLng], { icon, zIndexOffset: 500 }).addTo(this.map);
 
       this.fakeDrivers.push({
@@ -280,7 +282,7 @@ const App = {
       btn.textContent = 'Enter your name above';
     } else {
       btn.disabled    = true;
-      btn.textContent = 'Select a Shu-Haul';
+      btn.textContent = 'Select a ShuHaul';
     }
   },
 
@@ -361,7 +363,7 @@ const App = {
       ? pickup.address.split(',').slice(0, 2).join(',')   // trim long Nominatim strings
       : `${pickup.lat.toFixed(4)}° N, ${Math.abs(pickup.lng).toFixed(4)}° W`;
 
-    const tierPoints = { 'Shu-Haul X': 5, 'Shu-Haul Black': 10, 'Shu-Haul Pool': 3 };
+    const tierPoints = { 'ShuHaul X': 5, 'ShuHaul Black': 10, 'ShuHaul Pool': 3 };
     const fp = tierPoints[tier] ?? 5;
 
     document.getElementById('trip-pickup').textContent        = pickupStr;

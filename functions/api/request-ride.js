@@ -37,7 +37,7 @@ export async function onRequestPost(context) {
     `Pickup: ${pickupStr}\n` +
     `Dropoff: ${dropoff}\n` +
     `Tier: ${tier}\n` +
-    `—\nSent by the Shu-Haul platform. Good luck out there, Sheldon.`;
+    `—\nSent by the ShuHaul platform. Good luck out there, Sheldon.`;
 
   console.log('Incoming ride request:', { name, pickup: pickupStr, dropoff, tier });
 
